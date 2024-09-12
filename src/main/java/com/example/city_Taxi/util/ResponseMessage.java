@@ -1,5 +1,10 @@
 package com.example.city_Taxi.util;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ResponseMessage {
         private int code;
         private String message;
@@ -11,18 +16,9 @@ public class ResponseMessage {
             this.object = object;
         }
 
-    public void setCode(int code) {
-            this.code = code;
-        }
+    public ResponseMessage() {
 
-    public void setMessage(String message) {
-            this.message = message;
-        }
-
-    public void setObject(Object object) {
-            this.object = object;
-        }
-
+    }
         @Override
         public String toString() {
             return "StandardResponse{" +

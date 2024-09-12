@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.geo.Point;
 
-
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,11 +28,9 @@ public class Trip {
     @Column(nullable = true)
     private Long driverId;
 
-    @Type(type = "org.hibernate.spatial.GeometryType")
     @Column(columnDefinition = "geometry(Point, 4326)")
     private Point startLocation;
 
-    @Type(type = "org.hibernate.spatial.GeometryType")
     @Column(columnDefinition = "geometry(Point, 4326)")
     private Point endLocation;
 

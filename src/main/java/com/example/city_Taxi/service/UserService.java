@@ -10,4 +10,6 @@ public interface UserService {
     ResponseMessage getUserById(Long id);
     ResponseMessage deleteUser(Long id);
     ResponseMessage getAllUsers();
+    ResponseMessage findUserByUsername(String username);
+    ResponseMessage authenticate(UserDTO userDTO);
 }
