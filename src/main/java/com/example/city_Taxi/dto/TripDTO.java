@@ -12,10 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TripDTO implements Serializable {
 
-    private Long userId;
+    private Long passengerId;
     private Long driverId;
-    private Point pickupLocation;
-    private Point dropOffLocation;
+    private double startLatitude;
+    private double startLongitude;
+    private double endLatitude;
+    private double endLongitude;
     private LocalDateTime bookingTime;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * The type Web config.
  */
-@EnableWebMvc
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 

@@ -11,4 +11,5 @@ public interface TripService {
     ResponseMessage cancelTrip(Long tripId);
     ResponseMessage getTripDetailsById(Long tripId);
     ResponseMessage getAllTrip(Long userId, boolean IsDriver);
+    ResponseMessage searchTrip(Double startLatitude, Double startLongitude, Double distance);
 }

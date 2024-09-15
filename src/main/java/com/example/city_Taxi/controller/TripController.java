@@ -21,6 +21,7 @@ public class TripController {
     @PutMapping("/start/{tripId}")
     public ResponseMessage startTrip(@PathVariable Long tripId, @RequestParam Long driverId) {
         return tripService.startTrip(tripId, driverId);
+
     }
 
     @PutMapping("/end/{tripId}")
@@ -41,5 +42,10 @@ public class TripController {
     @GetMapping("/user/{userId}")
     public ResponseMessage getAllTrips(@PathVariable Long userId, @RequestParam boolean isDriver) {
         return tripService.getAllTrip(userId, isDriver);
+    }
+
+    @GetMapping("/searchTrip")
+    public ResponseMessage searchTrip(@RequestParam Double startLatitude, @RequestParam Double startLongitude, @RequestParam Double distance) {
+        return tripService.searchTrip(startLatitude, startLongitude, distance);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.city_Taxi.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.Table;
-import org.hibernate.annotations.*;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.geo.Point;
+import org.locationtech.jts.geom.Point;
+import org.n52.jackson.datatype.jts.GeometryDeserializer;
+import org.n52.jackson.datatype.jts.GeometrySerializer;
 
 import java.time.LocalDateTime;
 
@@ -23,15 +25,19 @@ public class Trip {
     private Long id;
 
     @Column(nullable = false)
-    private Long userId;
+    private Long passengerId;
 
     @Column(nullable = true)
     private Long driverId;
 
-    @Column(columnDefinition = "geometry(Point, 4326)")
+    @Column(name = "start_location")
+    @JsonSerialize(using = GeometrySerializer.class)
+    @JsonDeserialize(using = GeometryDeserializer.class)
     private Point startLocation;
 
-    @Column(columnDefinition = "geometry(Point, 4326)")
+    @Column(name = "end_location")
+    @JsonSerialize(using = GeometrySerializer.class)
+    @JsonDeserialize(using = GeometryDeserializer.class)
     private Point endLocation;
 
     @Column(nullable = true)

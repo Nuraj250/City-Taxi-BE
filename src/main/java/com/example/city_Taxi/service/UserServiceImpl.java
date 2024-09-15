@@ -51,10 +51,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseMessage getUserById(Long id) {
-        return userRepository.findById(id).map(user -> {
-            userRepository.delete(user);
-            return new ResponseMessage(200, Alert.removeSuccess, null);
-        }).orElse(new ResponseMessage(404, Alert.nosuchfound, null));
+        return userRepository.findById(id)
+                .map(user -> new ResponseMessage(200, "User found", user)) // Status code 200 for success
+                .orElseGet(() -> new ResponseMessage(404, "User not found", null)); // Status code 404 for not found
     }
 
     @Override
