@@ -21,7 +21,6 @@ public class TripController {
     @PutMapping("/start/{tripId}")
     public ResponseMessage startTrip(@PathVariable Long tripId, @RequestParam Long driverId) {
         return tripService.startTrip(tripId, driverId);
-
     }
 
     @PutMapping("/end/{tripId}")
