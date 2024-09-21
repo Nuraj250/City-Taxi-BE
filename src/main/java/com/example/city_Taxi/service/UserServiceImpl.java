@@ -84,12 +84,6 @@ public class UserServiceImpl implements UserService {
         if (existUser == null) {
             return new ResponseMessage(404, Alert.nosuchfound, null); // User not found
         }
-
-        System.out.println("Input Password: " + userDTO.getPassword());
-        System.out.println("Stored Password: " + existUser.getPassword());
-        System.out.println("Is Password Matching: " + passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword()));
-
-
         // Check password match
         if (passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword())) {
 
