@@ -12,4 +12,8 @@ public interface VehicleService {
     ResponseMessage getVehiclesByUser(Long userId);
 
     ResponseMessage deleteVehicle(Long id);
+
+    ResponseMessage getAllVehicles();
+
+    ResponseMessage getVehicleById(Long id);
 }

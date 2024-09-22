@@ -6,32 +6,29 @@ import com.example.city_Taxi.model.User;
 import com.example.city_Taxi.repository.UserRepository;
 import com.example.city_Taxi.util.Alert;
 import com.example.city_Taxi.util.ResponseMessage;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseMessage registerUser(UserDTO userDTO) {
+    public ResponseMessage registerUser(final UserDTO userDTO) {
         try {
             User user = UserMapper.INSTANCE.userDTOToUser(userDTO);
             userRepository.save(user);
             return new ResponseMessage(200, Alert.registerSuccess, user);
         } catch (Exception e) {
+            log.error("ERROR {} ", e.getMessage());
             return new ResponseMessage(500, Alert.registerFailed, null);
         }
     }
@@ -71,9 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseMessage findUserByUsername(String username) {
-        return userRepository.findByUsername(username).map(user -> new ResponseMessage(200, Alert.ok, user))
-                .orElse(new ResponseMessage(404, Alert.nosuchfound, null));
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     @Override

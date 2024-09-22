@@ -2,6 +2,7 @@ package com.example.city_Taxi.service;
 
 import com.example.city_Taxi.dto.VehicleDTO;
 import com.example.city_Taxi.mapper.VehicleMapper;
+import com.example.city_Taxi.model.User;
 import com.example.city_Taxi.model.Vehicle;
 import com.example.city_Taxi.repository.VehicleRepository;
 import com.example.city_Taxi.util.Alert;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
@@ -61,5 +63,20 @@ public class VehicleServiceImpl implements VehicleService {
             return new ResponseMessage(200, Alert.removeSuccess, null);
         }). orElse(new ResponseMessage(404, Alert.nosuchfound, null));
 
+    }
+
+    @Override
+    public ResponseMessage getAllVehicles() {
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        if (vehicles.isEmpty()) {
+            return new ResponseMessage(404, Alert.nosuchfound, null);
+        }
+        return new ResponseMessage(200, Alert.ok, vehicles);
+    }
+
+    @Override
+    public ResponseMessage getVehicleById(Long id) {
+        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        return vehicle.map(value -> new ResponseMessage(200, Alert.ok, value)).orElseGet(() -> new ResponseMessage(404, Alert.nosuchfound, null));
     }
 }

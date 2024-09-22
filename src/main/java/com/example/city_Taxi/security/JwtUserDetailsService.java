@@ -25,24 +25,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             // Fetch the ResponseMessage from the user service
-            ResponseMessage responseMessage = userService.findUserByUsername(username);
-
-            // If user is found (code == 200), return the user details in a new ResponseMessage
-            if (responseMessage.getCode() == 200) {
-                User registeredUser = (User) responseMessage.getObject();
-
-                // Return a success ResponseMessage wrapping Spring Security's UserDetails object
-                return (UserDetails) new ResponseMessage(200, Alert.ok,
-                        new org.springframework.security.core.userdetails.User(
-                                registeredUser.getUsername(),
-                                registeredUser.getPassword(),
-                                Collections.emptyList() // Add authorities if applicable
-                        )
-                );
-            }
-
-            // Return 404 if user is not found
-            return (UserDetails) new ResponseMessage(404, Alert.nosuchfound, null);
+            User user = userService.findUserByUsername(username);
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Collections.emptyList());
 
         } catch (Exception ex) {
             // Log the error and return a generic error response

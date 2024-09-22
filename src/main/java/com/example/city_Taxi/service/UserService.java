@@ -1,6 +1,7 @@
 package com.example.city_Taxi.service;
 
 import com.example.city_Taxi.dto.UserDTO;
+import com.example.city_Taxi.model.User;
 import com.example.city_Taxi.util.ResponseMessage;
 
 public interface UserService {
@@ -10,6 +11,6 @@ public interface UserService {
     ResponseMessage getUserById(Long id);
     ResponseMessage deleteUser(Long id);
     ResponseMessage getAllUsers();
-    ResponseMessage findUserByUsername(String username);
+    User findUserByUsername(String username);
     ResponseMessage authenticate(UserDTO userDTO);
 }

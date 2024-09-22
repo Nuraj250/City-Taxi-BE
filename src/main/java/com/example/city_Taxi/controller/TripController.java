@@ -3,48 +3,66 @@ package com.example.city_Taxi.controller;
 import com.example.city_Taxi.dto.TripDTO;
 import com.example.city_Taxi.service.TripService;
 import com.example.city_Taxi.util.ResponseMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/trip")
+@RequestMapping("v1/trips")
+@Slf4j
 public class TripController {
 
     @Autowired
     private TripService tripService;
 
     @PostMapping("/book")
-    public ResponseMessage bookTrip(@RequestBody TripDTO tripDTO) {
-        return tripService.bookTrip(tripDTO);
+    public ResponseEntity<?> bookTrip(@RequestBody TripDTO tripDTO) {
+        ResponseMessage bookTrip = tripService.bookTrip(tripDTO);
+        log.info("Trip Is Booked {}", bookTrip);
+        return new ResponseEntity<>(bookTrip, HttpStatusCode.valueOf(bookTrip.getCode()));
     }
 
     @PutMapping("/start/{tripId}")
-    public ResponseMessage startTrip(@PathVariable Long tripId, @RequestParam Long driverId) {
-        return tripService.startTrip(tripId, driverId);
+    public ResponseEntity<?> startTrip(@PathVariable Long tripId, @RequestParam Long driverId) {
+        ResponseMessage startTrip = tripService.startTrip(tripId, driverId);
+        log.info("Trip IS Started {}", startTrip);
+        return new ResponseEntity<>(startTrip, HttpStatusCode.valueOf(startTrip.getCode()));
     }
 
     @PutMapping("/end/{tripId}")
-    public ResponseMessage endTrip(@PathVariable Long tripId) {
-        return tripService.completeTrip(tripId);
+    public ResponseEntity<?> endTrip(@PathVariable Long tripId) {
+        ResponseMessage endTrip = tripService.completeTrip(tripId);
+        log.info("Trip IS ended {}", endTrip);
+        return new ResponseEntity<>(endTrip, HttpStatusCode.valueOf(endTrip.getCode()));
     }
 
     @PutMapping("/cancel/{tripId}")
-    public ResponseMessage cancelTrip(@PathVariable Long tripId) {
-        return tripService.cancelTrip(tripId);
+    public ResponseEntity<?> cancelTrip(@PathVariable Long tripId) {
+        ResponseMessage cancelTrip = tripService.cancelTrip(tripId);
+        log.info("Trip IS canceled {}", cancelTrip);
+        return new ResponseEntity<>(cancelTrip, HttpStatusCode.valueOf(cancelTrip.getCode()));
     }
 
     @GetMapping("/{tripId}")
-    public ResponseMessage getTripDetailsById(@PathVariable Long tripId) {
-        return tripService.getTripDetailsById(tripId);
+    public ResponseEntity<?> getTripDetailsById(@PathVariable Long tripId) {
+        ResponseMessage getTripDetailsById = tripService.getTripDetailsById(tripId);
+        log.info("Trip IS here {}", getTripDetailsById);
+        return new ResponseEntity<>(getTripDetailsById, HttpStatusCode.valueOf(getTripDetailsById.getCode()));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseMessage getAllTrips(@PathVariable Long userId, @RequestParam boolean isDriver) {
-        return tripService.getAllTrip(userId, isDriver);
+    public ResponseEntity<?> getAllTrips(@PathVariable Long userId, @RequestParam boolean isDriver) {
+        ResponseMessage getAllTrips = tripService.getAllTrip(userId, isDriver);
+        log.info("All the Trips {}", getAllTrips);
+        return new ResponseEntity<>(getAllTrips, HttpStatusCode.valueOf(getAllTrips.getCode()));
     }
 
     @GetMapping("/searchTrip")
-    public ResponseMessage searchTrip(@RequestParam Double startLatitude, @RequestParam Double startLongitude, @RequestParam Double distance) {
-        return tripService.searchTrip(startLatitude, startLongitude, distance);
+    public ResponseEntity<?> searchTrip(@RequestParam Double startLatitude, @RequestParam Double startLongitude, @RequestParam Double distance) {
+        ResponseMessage searchTrip = tripService.searchTrip(startLatitude, startLongitude, distance);
+        log.info("Trip searched {}", searchTrip);
+        return new ResponseEntity<>(searchTrip, HttpStatusCode.valueOf(searchTrip.getCode()));
     }
 }
