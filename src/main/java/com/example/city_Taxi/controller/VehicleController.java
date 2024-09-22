@@ -11,24 +11,17 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/vehicle")
+@RequestMapping("v1/vehicles")
 public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> addVehicle(@RequestBody VehicleDTO vehicleDTO, @RequestParam Long userId) {
         ResponseMessage addVehicle = vehicleService.creatVehicle(vehicleDTO, userId);
         log.info("Vehicle found {}", addVehicle);
         return new ResponseEntity<>(addVehicle, HttpStatusCode.valueOf(addVehicle.getCode()));
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getVehiclesByUserId(@PathVariable Long userId) {
-        ResponseMessage getVehiclesByUserId = vehicleService.getVehiclesByUser(userId);
-        log.info("Vehicle IS here {}", getVehiclesByUserId);
-        return new ResponseEntity<>(getVehiclesByUserId, HttpStatusCode.valueOf(getVehiclesByUserId.getCode()));
     }
 
     @PutMapping("/{id}")
@@ -51,4 +44,12 @@ public class VehicleController {
         log.info("list of All Users {}", getAllVehicles);
         return new ResponseEntity<>(getAllVehicles, HttpStatusCode.valueOf(getAllVehicles.getCode()));
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getVehiclesByUserId(@PathVariable Long userId) {
+        ResponseMessage getVehiclesByUserId = vehicleService.getVehiclesByUser(userId);
+        log.info("Vehicle IS here {}", getVehiclesByUserId);
+        return new ResponseEntity<>(getVehiclesByUserId, HttpStatusCode.valueOf(getVehiclesByUserId.getCode()));
+    }
+
 }
