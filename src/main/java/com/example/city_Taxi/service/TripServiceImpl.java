@@ -24,7 +24,6 @@ public class TripServiceImpl implements TripService{
 
     private final GeometryFactory geometryFactory = new GeometryFactory();
 
-    @Autowired
     private TripRepository tripRepository;
 
     @Override

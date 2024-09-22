@@ -20,9 +20,7 @@ import java.util.Optional;
 @Slf4j
 public class VehicleServiceImpl implements VehicleService {
 
-    @Autowired
     private VehicleRepository vehicleRepository;
-
 
     @Override
     public ResponseMessage creatVehicle(VehicleDTO vehicleDto, Long id) {

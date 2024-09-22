@@ -1,5 +1,6 @@
 package com.example.city_Taxi.util;
 
+import com.example.city_Taxi.model.User;
 import lombok.Getter;
 import lombok.Setter;
 

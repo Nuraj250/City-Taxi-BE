@@ -6,8 +6,10 @@ import com.example.city_Taxi.model.User;
 import com.example.city_Taxi.repository.UserRepository;
 import com.example.city_Taxi.util.Alert;
 import com.example.city_Taxi.util.ResponseMessage;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,8 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
+//@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -25,6 +28,7 @@ public class UserServiceImpl implements UserService {
     public ResponseMessage registerUser(final UserDTO userDTO) {
         try {
             User user = UserMapper.INSTANCE.userDTOToUser(userDTO);
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             userRepository.save(user);
             return new ResponseMessage(200, Alert.registerSuccess, user);
         } catch (Exception e) {
@@ -74,13 +78,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseMessage authenticate(UserDTO userDTO) {
-        return userRepository.findByUsername(userDTO.getUsername())
-                .map(existUser -> {
-                    if (passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword())) {
-                        return new ResponseMessage(200, Alert.ok, existUser); // Success
-                    }
-                    return new ResponseMessage(401, Alert.saveFailed, null); // Unauthorized
-                })
-                .orElse(new ResponseMessage(404, Alert.nosuchfound, null)); // User not found
+        User existUser = this.userRepository.findByUsername(userDTO.getUsername())
+                .orElse(null);
+
+        if (existUser == null) {
+            return new ResponseMessage(404, Alert.nosuchfound, null); // User not found
+        }
+
+        System.out.println("Input Password: " + userDTO.getPassword());
+        System.out.println("Stored Password: " + existUser.getPassword());
+        System.out.println("Is Password Matching: " + passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword()));
+
+
+        // Check password match
+        if (passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword())) {
+
+            return new ResponseMessage(200, Alert.ok, existUser); // Success, return user
+        } else {
+           return new ResponseMessage(401, "Password doesn't match for user", null); // Unauthorized
+        }
     }
 }
