@@ -3,7 +3,9 @@ package com.example.city_Taxi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,4 +36,18 @@ public class User {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+
+    @Column(nullable = true)
+    private double rating; // Average rating for the driver
+
+    @Column(nullable = true)
+    private int totalRatings; // The number of ratings the driver has received
+
+    @Column(nullable = true)
+    private String feedback; // The feedback received by customers
+
+    @Column(nullable = true)
+    private String driverState; // Either 'available' or 'busy'
+
 }
+
