@@ -18,11 +18,13 @@ import java.util.List;
 @Service
 @Slf4j
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
-//@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private final EmailService emailService;
 
     @Override
     public ResponseMessage registerUser(final UserDTO userDTO) {
@@ -30,7 +32,8 @@ public class UserServiceImpl implements UserService {
             User user = UserMapper.INSTANCE.userDTOToUser(userDTO);
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             userRepository.save(user);
-            return new ResponseMessage(200, Alert.registerSuccess, user);
+            // Send the registration email
+            emailService.sendRegistrationEmail(user.getEmail(), user.getUsername(), userDTO.getPassword());            return new ResponseMessage(200, Alert.registerSuccess, user);
         } catch (Exception e) {
             log.error("ERROR {} ", e.getMessage());
             return new ResponseMessage(500, Alert.registerFailed, null);
