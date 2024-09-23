@@ -7,7 +7,6 @@ import com.example.city_Taxi.repository.UserRepository;
 import com.example.city_Taxi.util.Alert;
 import com.example.city_Taxi.util.ResponseMessage;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
