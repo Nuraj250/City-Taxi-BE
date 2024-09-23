@@ -4,21 +4,21 @@ A Spring Boot-based taxi booking system where passengers can book, start, comple
 
 ## Table of Contents
 
-- [Project Overview](#project-overview)
-- [Technologies Used](#technologies-used)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-  - [Twilio Setup](#twilio-setup)
-  - [Database Configuration](#database-configuration)
-- [How to Run the Project](#how-to-run-the-project)
-- [Key Features](#key-features)
-  - [Booking a Trip](#booking-a-trip)
-  - [Starting a Trip](#starting-a-trip)
-  - [Completing a Trip](#completing-a-trip)
-  - [Canceling a Trip](#canceling-a-trip)
-- [API Endpoints](#api-endpoints)
-- [Contact](#contact)
+- Project Overview
+- Technologies Used
+- Prerequisites
+- Installation
+- Configuration
+  - Twilio Setup
+  - Database Configuration
+- How to Run the Project
+- Key Features
+  - Booking a Trip
+  - Starting a Trip
+  - Completing a Trip
+  - Canceling a Trip
+- API Endpoints
+- Contact
 
 ## Project Overview
 
@@ -52,6 +52,23 @@ Before you begin, ensure you have met the following requirements:
 
 ## Installation
 
-1. **Clone the repository:**
-   ```bash
+1. Clone the repository:
+   
    git clone https://github.com/your-username/city-taxi.git
+
+2. Navigate to the project directory:
+
+   cd city-taxi
+
+3. Install dependencies:
+
+   mvn clean install
+
+## Configuration
+
+### Twilio Setup
+
+To send SMS notifications using Twilio, you'll need to sign up for a Twilio account and obtain your **Account SID**, **Auth Token**, and **Twilio Phone Number**.
+
+Add the following configurations to your `application.properties`:
+
