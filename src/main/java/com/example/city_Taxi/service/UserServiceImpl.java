@@ -17,11 +17,13 @@ import java.util.List;
 @Service
 @Slf4j
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
-//@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private final EmailService emailService;
 
     @Override
     public ResponseMessage registerUser(final UserDTO userDTO) {
@@ -29,7 +31,8 @@ public class UserServiceImpl implements UserService {
             User user = UserMapper.INSTANCE.userDTOToUser(userDTO);
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             userRepository.save(user);
-            return new ResponseMessage(200, Alert.registerSuccess, user);
+            // Send the registration email
+            emailService.sendRegistrationEmail(user.getEmail(), user.getUsername(), userDTO.getPassword());            return new ResponseMessage(200, Alert.registerSuccess, user);
         } catch (Exception e) {
             log.error("ERROR {} ", e.getMessage());
             return new ResponseMessage(500, Alert.registerFailed, null);
@@ -83,12 +86,6 @@ public class UserServiceImpl implements UserService {
         if (existUser == null) {
             return new ResponseMessage(404, Alert.nosuchfound, null); // User not found
         }
-
-        System.out.println("Input Password: " + userDTO.getPassword());
-        System.out.println("Stored Password: " + existUser.getPassword());
-        System.out.println("Is Password Matching: " + passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword()));
-
-
         // Check password match
         if (passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword())) {
 
