@@ -15,4 +15,5 @@ public class UserDTO implements Serializable {
     private String email;
     private String userType; // "Driver", "Customer", "Admin"
     private String profileImage; // Image URL or path
+    private String contact;
 }

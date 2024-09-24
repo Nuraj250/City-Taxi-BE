@@ -27,6 +27,9 @@ public class User {
     private String email;
 
     @Column(nullable = false)
+    private String contact;
+
+    @Column(nullable = false)
     private String userType; // "Driver", "Customer", "Admin"
 
     @Column(nullable = true)
