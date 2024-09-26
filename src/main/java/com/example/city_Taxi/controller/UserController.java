@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("v1/users")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -55,7 +57,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody UserDTO userDTO) {
         ResponseMessage authenticate = userService.authenticate(userDTO);
-        log.info("User Logged {}", userDTO.getUsername());
+        log.info("User named {} is Logged ", userDTO.getUsername());
         return new ResponseEntity<>(authenticate, HttpStatusCode.valueOf(authenticate.getCode()));
     }
 }

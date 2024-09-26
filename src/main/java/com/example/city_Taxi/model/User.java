@@ -2,8 +2,10 @@ package com.example.city_Taxi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "app_user")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,10 +43,10 @@ public class User {
     private Date createdDate;
 
     @Column(nullable = true)
-    private double rating; // Average rating for the driver
+    private Double rating = 0.0; // Average rating for the driver
 
     @Column(nullable = true)
-    private int totalRatings; // The number of ratings the driver has received
+    private Integer totalRatings = 0; // The number of ratings the driver has received
 
     @Column(nullable = true)
     private String feedback; // The feedback received by customers
@@ -52,5 +54,9 @@ public class User {
     @Column(nullable = true)
     private String driverState; // Either 'available' or 'busy'
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
 }
 

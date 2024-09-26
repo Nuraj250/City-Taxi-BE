@@ -56,7 +56,7 @@ public class TripServiceImpl implements TripService {
             // Send SMS using TwilioService
             twilioService.sendSMS(userPhoneNumber, messageBody);
 
-            return new ResponseMessage(500, Alert.saveSuccess, trip);
+            return new ResponseMessage(200, Alert.saveSuccess, trip);
         } catch (Exception e) {
             return new ResponseMessage(500, Alert.saveFailed, null);
         }

@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/drivers")
+@RequestMapping("/v1/drivers")
 @Slf4j
 @RestController
+@CrossOrigin(origins = "*")
 public class DriverController {
     @Autowired
     private DriverService driverService;

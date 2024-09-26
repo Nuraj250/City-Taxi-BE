@@ -4,15 +4,18 @@ import com.example.city_Taxi.dto.UserDTO;
 import com.example.city_Taxi.mapper.UserMapper;
 import com.example.city_Taxi.model.User;
 import com.example.city_Taxi.repository.UserRepository;
+import com.example.city_Taxi.security.JwtTokenUtil;
 import com.example.city_Taxi.util.Alert;
 import com.example.city_Taxi.util.ResponseMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -21,8 +24,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
+    private final JwtTokenUtil jwtTokenUtil;
     private final EmailService emailService;
 
     @Override
@@ -30,9 +32,10 @@ public class UserServiceImpl implements UserService {
         try {
             User user = UserMapper.INSTANCE.userDTOToUser(userDTO);
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            userRepository.save(user);
+            User save = userRepository.save(user);
             // Send the registration email
-            emailService.sendRegistrationEmail(user.getEmail(), user.getUsername(), userDTO.getPassword());            return new ResponseMessage(200, Alert.registerSuccess, user);
+            emailService.sendRegistrationEmail(user.getEmail(), user.getUsername(), userDTO.getPassword());
+            return new ResponseMessage(200, Alert.registerSuccess, user);
         } catch (Exception e) {
             log.error("ERROR {} ", e.getMessage());
             return new ResponseMessage(500, Alert.registerFailed, null);
@@ -88,8 +91,16 @@ public class UserServiceImpl implements UserService {
         }
         // Check password match
         if (passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword())) {
-
-            return new ResponseMessage(200, Alert.ok, existUser); // Success, return user
+            final UserDetails userDetails = (UserDetails) this.findUserByUsername(userDTO.getUsername());
+            System.out.println(userDetails);
+            final String token = jwtTokenUtil.generateToken(userDetails);
+            Map<String, Object> userDetailsMap = Map.of(
+                    "username", existUser.getUsername(),
+                    "usertype", existUser.getUserType(),
+                    "contact", existUser.getContact(),
+                    "email", existUser.getEmail()
+            );
+            return new ResponseMessage(200, Alert.ok, userDetailsMap,token); // Success, return user
         } else {
            return new ResponseMessage(401, "Password doesn't match for user", null); // Unauthorized
         }

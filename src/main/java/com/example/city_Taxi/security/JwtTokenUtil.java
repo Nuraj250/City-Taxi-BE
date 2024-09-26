@@ -1,5 +1,6 @@
 package com.example.city_Taxi.security;
 
+import com.example.city_Taxi.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
