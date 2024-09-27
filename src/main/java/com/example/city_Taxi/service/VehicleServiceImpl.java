@@ -51,7 +51,8 @@ public class VehicleServiceImpl implements VehicleService {
         List<Vehicle> vehicles = vehicleRepository.findAllByUserId(userId);
         if (vehicles.isEmpty()) {
             return new ResponseMessage(404, Alert.nosuchfound, null);
-        }return new ResponseMessage(200, Alert.ok, vehicles);
+        }
+        return new ResponseMessage(200, Alert.ok, vehicles);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findById(id).map(vehicle -> {
             vehicleRepository.delete(vehicle);
             return new ResponseMessage(200, Alert.removeSuccess, null);
-        }). orElse(new ResponseMessage(404, Alert.nosuchfound, null));
+        }).orElse(new ResponseMessage(404, Alert.nosuchfound, null));
 
     }
 

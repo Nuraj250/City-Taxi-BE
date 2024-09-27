@@ -7,10 +7,16 @@ import com.example.city_Taxi.util.ResponseMessage;
 public interface UserService {
 
     ResponseMessage registerUser(UserDTO userDTO);
+
     ResponseMessage updateUser(Long id, UserDTO userDTO);
+
     ResponseMessage getUserById(Long id);
+
     ResponseMessage deleteUser(Long id);
+
     ResponseMessage getAllUsers();
+
     User findUserByUsername(String username);
+
     ResponseMessage authenticate(UserDTO userDTO);
 }

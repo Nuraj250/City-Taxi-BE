@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @Slf4j
-public class DriverServiceImpl implements DriverService{
+public class DriverServiceImpl implements DriverService {
 
     private DriverRepository driverRepository;
 
@@ -48,7 +48,8 @@ public class DriverServiceImpl implements DriverService{
             return new ResponseMessage(200, Alert.ok, driver);
         } catch (Exception e) {
             return new ResponseMessage(500, Alert.saveFailed, null);
-        }    }
+        }
+    }
 
     @Override
     public ResponseMessage addRatingAndFeedback(Long driverId, double rating, String feedback) {

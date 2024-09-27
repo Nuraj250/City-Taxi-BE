@@ -5,7 +5,7 @@ import com.example.city_Taxi.util.ResponseMessage;
 
 public interface VehicleService {
 
-    ResponseMessage  creatVehicle(VehicleDTO vehicleDto, Long id);
+    ResponseMessage creatVehicle(VehicleDTO vehicleDto, Long id);
 
     ResponseMessage updateVehicle(Long id, VehicleDTO vehicleDto);
 

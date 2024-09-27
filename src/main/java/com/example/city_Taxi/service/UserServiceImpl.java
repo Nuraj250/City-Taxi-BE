@@ -100,9 +100,9 @@ public class UserServiceImpl implements UserService {
                     "contact", existUser.getContact(),
                     "email", existUser.getEmail()
             );
-            return new ResponseMessage(200, Alert.ok, userDetailsMap,token); // Success, return user
+            return new ResponseMessage(200, Alert.ok, userDetailsMap, token); // Success, return user
         } else {
-           return new ResponseMessage(401, "Password doesn't match for user", null); // Unauthorized
+            return new ResponseMessage(401, "Password doesn't match for user", null); // Unauthorized
         }
     }
 }
