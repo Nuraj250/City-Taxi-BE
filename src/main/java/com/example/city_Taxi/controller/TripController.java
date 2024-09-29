@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("v1/trips")
 @Slf4j
@@ -26,7 +28,12 @@ public class TripController {
     }
 
     @PutMapping("/start/{tripId}")
-    public ResponseEntity<?> startTrip(@PathVariable Long tripId, @RequestParam Long driverId) {
+    public ResponseEntity<?> startTrip(@PathVariable Long tripId, @RequestBody Map<String, Object> body) {
+        System.out.println(tripId);
+
+        Long driverId = Long.valueOf(body.get("driverId").toString()); // Extract driverId from the body map
+        System.out.println(driverId);
+
         ResponseMessage startTrip = tripService.startTrip(tripId, driverId);
         log.info("Trip IS Started {}", startTrip);
         return new ResponseEntity<>(startTrip, HttpStatusCode.valueOf(startTrip.getCode()));
@@ -61,7 +68,11 @@ public class TripController {
     }
 
     @GetMapping("/searchTrip")
-    public ResponseEntity<?> searchTrip(@RequestParam Double startLatitude, @RequestParam Double startLongitude, @RequestParam Double distance) {
+    public ResponseEntity<?> searchTrip(@RequestBody Map<String, Double> requestData) {
+        Double startLatitude = requestData.get("startLatitude");
+        Double startLongitude = requestData.get("startLongitude");
+        Double distance = requestData.get("distance");
+
         ResponseMessage searchTrip = tripService.searchTrip(startLatitude, startLongitude, distance);
         log.info("Trip searched {}", searchTrip);
         return new ResponseEntity<>(searchTrip, HttpStatusCode.valueOf(searchTrip.getCode()));
