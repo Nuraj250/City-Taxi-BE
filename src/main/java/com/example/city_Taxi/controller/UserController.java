@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("v1/users")
 @Slf4j
-@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired

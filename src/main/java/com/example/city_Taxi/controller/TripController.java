@@ -14,7 +14,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("v1/trips")
 @Slf4j
-@CrossOrigin(origins = "*")
 public class TripController {
 
     @Autowired

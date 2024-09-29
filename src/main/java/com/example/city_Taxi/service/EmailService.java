@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 public class EmailService {
 
+    @Autowired
     private JavaMailSender mailSender;
 
     public void sendRegistrationEmail(String toEmail, String username, String password) {
