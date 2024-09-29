@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
             System.out.println(userDetails);
             final String token = jwtTokenUtil.generateToken(userDetails);
             Map<String, Object> userDetailsMap = Map.of(
+                    "id", existUser.getId(),
                     "username", existUser.getUsername(),
                     "usertype", existUser.getUserType(),
                     "contact", existUser.getContact(),

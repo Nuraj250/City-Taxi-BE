@@ -35,7 +35,7 @@ public class Vehicle implements Serializable {
     private String vehicleType;
 
     @Column(nullable = false)
-    private String Year;
+    private String year;
 
     @Column(nullable = false)
     private Long userId;

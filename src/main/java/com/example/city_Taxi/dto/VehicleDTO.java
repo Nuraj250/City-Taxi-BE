@@ -16,7 +16,7 @@ public class VehicleDTO implements Serializable {
     private String registrationNumber;
     private String licensePlateNumber;
     private String vehicleType;
-    private String Year;
+    private String year;
     private int userID;
     private String image1;
     private String image2;
