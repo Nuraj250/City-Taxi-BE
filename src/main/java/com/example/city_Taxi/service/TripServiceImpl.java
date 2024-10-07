@@ -103,8 +103,6 @@ public class TripServiceImpl implements TripService {
             if ("STARTED".equals(trip.getStatus())) {
                 trip.setEndTime(LocalDateTime.now());
                 trip.setStatus("COMPLETED");
-                double fare = calculateFare(trip);
-                trip.setFare(fare);
                 tripRepository.save(trip);
                 Long passengerId = trip.getPassengerId();
                 User passenger = userRepository.findById(passengerId)
@@ -114,6 +112,7 @@ public class TripServiceImpl implements TripService {
 
                 // Fetch the driver details using the driverId
                 Long driverId = trip.getDriverId();
+                Double fare = trip.getFare();
                 User driver = userRepository.findById(driverId)
                         .orElseThrow(() -> new RuntimeException("Driver not found with ID: " + driverId));
 
@@ -180,10 +179,6 @@ public class TripServiceImpl implements TripService {
             return new ResponseMessage(200, Alert.ok, searchTrip);
         }
         return new ResponseMessage(404, "No Trip found", null);
-    }
-
-    private double calculateFare(Trip trip) {
-        return 0;
     }
 
     private Point mapToPoint(final double longitude, final double latitude) {

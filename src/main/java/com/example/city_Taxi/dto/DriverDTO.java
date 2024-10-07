@@ -5,11 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
 @ToString
 @NoArgsConstructor
-public class DriverDTO{
+public class DriverDTO implements Serializable {
 
     private String driverState; // Either 'available' or 'busy'
     private double rating; // New rating

@@ -23,4 +23,5 @@ public class TripDTO implements Serializable {
     private LocalDateTime endTime;
     private String status;
     private Double fare;
+    private int distant;
 }

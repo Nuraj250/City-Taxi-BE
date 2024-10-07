@@ -54,4 +54,7 @@ public class Trip {
 
     @Column(nullable = true)
     private Double fare;
+
+    @Column(nullable = true)
+    private int distant;
 }

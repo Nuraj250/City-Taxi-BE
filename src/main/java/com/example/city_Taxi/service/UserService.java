@@ -8,6 +8,8 @@ public interface UserService {
 
     ResponseMessage registerUser(UserDTO userDTO);
 
+    ResponseMessage registerUserByOperator(UserDTO userDTO);
+
     ResponseMessage updateUser(Long id, UserDTO userDTO);
 
     ResponseMessage getUserById(Long id);

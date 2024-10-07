@@ -1,7 +1,11 @@
 package com.example.city_Taxi.controller;
 
+import com.example.city_Taxi.dto.BookingRequestDTO;
 import com.example.city_Taxi.dto.TripDTO;
+import com.example.city_Taxi.dto.UserDTO;
+import com.example.city_Taxi.model.User;
 import com.example.city_Taxi.service.TripService;
+import com.example.city_Taxi.service.UserService;
 import com.example.city_Taxi.util.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("v1/trips")
@@ -19,11 +24,36 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/book")
     public ResponseEntity<?> bookTrip(@RequestBody TripDTO tripDTO) {
         ResponseMessage bookTrip = tripService.bookTrip(tripDTO);
         log.info("Trip Is Booked {}", bookTrip);
         return new ResponseEntity<>(bookTrip, HttpStatusCode.valueOf(bookTrip.getCode()));
+    }
+
+    @PostMapping("/operator/booking")
+    public ResponseEntity<?> opeartorbooking(@RequestBody BookingRequestDTO bookingRequestDTO){
+        // Extract UserDTO and TripDTO from the request
+        UserDTO userDTO = bookingRequestDTO.getUser();
+        TripDTO tripDTO = bookingRequestDTO.getTrip();
+        // Save the user details (this user is not registered yet)
+        ResponseMessage userResponse = userService.registerUserByOperator(userDTO);
+        // Use the generated user ID for the trip if necessary
+        if (userResponse.getCode() == 200) {
+            User user = (User) userResponse.getObject();
+            tripDTO.setPassengerId(user.getId()); // Assuming the registered user is the passenger
+
+            // Book the trip
+            ResponseMessage tripResponse = tripService.bookTrip(tripDTO);
+            log.info("Unregistered user's trip is booked by operator {}", tripResponse);
+
+            return new ResponseEntity<>(tripResponse, HttpStatusCode.valueOf(tripResponse.getCode()));
+        } else {
+            return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(userResponse.getCode()));
+        }
     }
 
     @PutMapping("/start/{tripId}")

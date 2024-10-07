@@ -10,7 +10,9 @@ import com.example.city_Taxi.util.ResponseMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,22 @@ import java.util.Map;
 
 @Service
 @Slf4j
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     private final EmailService emailService;
+    private final UserDetailsService userDetailsService;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, EmailService emailService, @Lazy UserDetailsService userDetailsService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.emailService = emailService;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     public ResponseMessage registerUser(final UserDTO userDTO) {
@@ -39,6 +50,20 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             log.error("ERROR {} ", e.getMessage());
             return new ResponseMessage(500, Alert.registerFailed, null);
+        }
+    }
+
+    @Override
+    public ResponseMessage registerUserByOperator(UserDTO userDTO) {
+        try {
+            User user = UserMapper.INSTANCE.userDTOToUser(userDTO);
+            user.setPassword(null); // Do not save the password for operator registered users
+            User savedUser = userRepository.save(user);
+            return new ResponseMessage(200, "User registered successfully", savedUser);
+        } catch (Exception e) {
+            log.error("ERROR on registerUserByOperator {}", e.getMessage());
+
+            return new ResponseMessage(500, "User registration failed", null);
         }
     }
 
@@ -91,7 +116,7 @@ public class UserServiceImpl implements UserService {
         }
         // Check password match
         if (passwordEncoder.matches(userDTO.getPassword(), existUser.getPassword())) {
-            final UserDetails userDetails = (UserDetails) this.findUserByUsername(userDTO.getUsername());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(userDTO.getUsername());
             System.out.println(userDetails);
             final String token = jwtTokenUtil.generateToken(userDetails);
             Map<String, Object> userDetailsMap = Map.of(
