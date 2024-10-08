@@ -1,4 +1,4 @@
-# City Taxi Application
+# **City Taxi Application**
 
 A Spring Boot-based taxi booking system where passengers can book, start, complete, and cancel trips. The system allows drivers to accept trips, and passengers are notified via SMS when the trip status changes. Twilio is used to send SMS notifications.
  
