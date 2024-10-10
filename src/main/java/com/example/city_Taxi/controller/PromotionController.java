@@ -18,7 +18,7 @@ public class PromotionController {
     @Autowired
     private PromotionService promotionService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<?> getAllPromotions() {
         return ResponseEntity.ok(promotionService.getAllPromotions());
     }
@@ -29,7 +29,7 @@ public class PromotionController {
         return new ResponseEntity<>(responseMessage, HttpStatus.valueOf(responseMessage.getCode()));
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> addPromotion(@RequestBody Promotion promotion) {
         ResponseMessage responseMessage = promotionService.addPromotion(promotion);
         return new ResponseEntity<>(responseMessage, HttpStatus.valueOf(responseMessage.getCode()));
